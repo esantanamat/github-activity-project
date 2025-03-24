@@ -2,11 +2,19 @@ import urllib.request
 import json
 import datetime
 import argparse
+from urllib.error import HTTPError, URLError
 
 def get_activity(username):
     url = f"https://api.github.com/users/{username}/events"
-    response = urllib.request.urlopen(url)
-    data = json.load(response)
+    try:
+        response = urllib.request.urlopen(url)
+        data = json.load(response)
+    except HTTPError as e:
+        print(f"There has been an HTTP error {e.code} - {e.reason}")
+    except URLError as e:
+        print(f"There has been an URL error {e.reason}")
+    except Exception as e:
+        print(f"An error has occured {str(e)}")
     today = datetime.datetime.now(datetime.timezone.utc).date()
     print(today)
     start_of_week = today - datetime.timedelta(days=today.weekday())
