@@ -16,7 +16,6 @@ def get_activity(username):
     except Exception as e:
         print(f"An error has occured {str(e)}")
     today = datetime.datetime.now(datetime.timezone.utc).date()
-    print(today)
     start_of_week = today - datetime.timedelta(days=today.weekday())
     commits = 0
     creates = 0
@@ -28,8 +27,10 @@ def get_activity(username):
         elif push["type"] == "CreateEvent":
             if start_of_week <= event_date <= today:
                 creates +=1 
-    print(f"there are {commits} commits this week")
-    print(f"There has been {creates} created repos this week")
+    commits_word = "commit" if commits == 1 else "commits"
+    creates_word = "repo" if creates == 1 else "repos"
+    print(f"There {'is' if commits == 1 else 'are'} {commits} {commits_word} this week")
+    print(f"There {'has' if creates == 1 else 'have'} been {creates} {creates_word} created this week")
 
 
 if __name__ == "__main__":
